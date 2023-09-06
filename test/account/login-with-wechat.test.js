@@ -27,4 +27,18 @@ describe('Login with Wechat', () => {
         });
     });
   });
+
+  describe('with code', () => {
+    const code = '0d3jxP000eTGEQ1jTs200SIN8j2jxP0Y';
+    it('returns 200', (done) => {
+      request(sails.hooks.http.app)
+        .get('/account/login-with-wechat?code=' + code) // replace with your actual endpoint
+        .end((err, res) => {
+          if (err) { return done(err);}
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.errcode).not.to.equal(41001);
+          done();
+        });
+    });
+  });
 });

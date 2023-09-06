@@ -1,4 +1,9 @@
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
+
+const appId = sails.config.custom.appId;
+const appSecret = sails.config.custom.appSecret;
+const jwtSeed = sails.config.custom.jwtSeed;
 
 /**
  * WechatLoginController
@@ -22,37 +27,43 @@ module.exports = {
 
   fn: async function ({ code }) {
     const config = {
-      appId: 'YOUR_APP_ID', // replace with your App ID
-      secret: 'YOUR_APP_SECRET', // replace with your App Secret
+      appId: appId,
+      secret: appSecret
     };
 
-    // Get access token
     try {
       let response = await axios.get(
-        'https://api.weixin.qq.com/sns/oauth2/access_token',
+        'https://api.weixin.qq.com/sns/jscode2session',
         {
           params: {
             appid: config.appId,
             secret: config.secret,
-            code: code,
+            js_code: code,
             grant_type: 'authorization_code',
           },
         }
       );
 
-      const access_token = response.data.access_token;
+      const session_key = response.data.session_key;
       const openid = response.data.openid;
+      if (!session_key || !openid) {
+        return this.res.badRequest(response.data);
+      }
 
-      // Use access token to get user info
-      response = await axios.get('https://api.weixin.qq.com/sns/userinfo', {
-        params: {
-          access_token: access_token,
-          openid: openid,
-          lang: 'en_US',
-        },
+      console.log(openid);
+
+      let user = await User.find({ openid: openid }).limit(1);
+      console.log(user);
+
+      if (user.length === 0) {
+        user = await User.create({ openid: openid }).fetch();
+      }
+
+      const token = jwt.sign({ userId: user.id }, jwtSeed);
+
+      return this.res.ok({
+        token: token
       });
-
-      return this.res.ok(response.data);
     } catch (error) {
       return this.res.serverError(error);
     }

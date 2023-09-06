@@ -2,6 +2,9 @@
  * @description :: The conventional "custom" hook.  Extends this app with custom server-start-time and request-time logic.
  * @docs        :: https://sailsjs.com/docs/concepts/extending-sails/hooks
  */
+const jwt = require('jsonwebtoken');
+
+const jwtSeed = sails.config.custom.jwtSeed;
 
 module.exports = function defineCustomHook(sails) {
 
@@ -163,17 +166,15 @@ will be disabled and/or hidden in the UI.
             // correct bundle files.
             res.setHeader('Cache-Control', 'no-cache, no-store');
 
-            // No session? Proceed as usual.
-            // (e.g. request for a static asset)
-            if (!req.session) { return next(); }
-
-            // Not logged in? Proceed as usual.
-            if (!req.session.userId) { return next(); }
+            const token = req.headers['token'];
+            if (!token) { return next(); }
 
             // Otherwise, look up the logged-in user.
-            var loggedInUser = await User.findOne({
-              id: req.session.userId
-            });
+
+            const userId = jwt.verify(token, jwtSeed).userId;
+            var loggedInUser = await User.find({
+              id: userId
+            }).limit(1);
 
             // If the logged-in user has gone missing, log a warning,
             // wipe the user id from the requesting user agent's session,
