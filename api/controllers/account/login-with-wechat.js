@@ -46,18 +46,11 @@ module.exports = {
 
       const session_key = response.data.session_key;
       const openid = response.data.openid;
-      if (!session_key || !openid) {
+      if (!session_key || !openid || openid === '') {
         return this.res.badRequest(response.data);
       }
 
-      console.log(openid);
-
-      let user = await User.find({ openid: openid }).limit(1);
-      console.log(user);
-
-      if (user.length === 0) {
-        user = await User.create({ openid: openid }).fetch();
-      }
+      const user = await User.findOrCreate({ openid: openid }, { openid: openid });
 
       const token = jwt.sign({ userId: user.id }, jwtSeed);
 

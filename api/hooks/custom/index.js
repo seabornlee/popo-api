@@ -172,30 +172,14 @@ will be disabled and/or hidden in the UI.
             // Otherwise, look up the logged-in user.
 
             const userId = jwt.verify(token, jwtSeed).userId;
-            var loggedInUser = await User.find({
+            var loggedInUser = await User.findOne({
               id: userId
-            }).limit(1);
+            });
 
-            // If the logged-in user has gone missing, log a warning,
-            // wipe the user id from the requesting user agent's session,
-            // and then send the "unauthorized" response.
             if (!loggedInUser) {
-              sails.log.warn('Somehow, the user record for the logged-in user (`'+req.session.userId+'`) has gone missing....');
-              delete req.session.userId;
-              return res.unauthorized();
+              return next();
             }
 
-            // Add additional information for convenience when building top-level navigation.
-            // (i.e. whether to display "Dashboard", "My Account", etc.)
-            if (!loggedInUser.password || loggedInUser.emailStatus === 'unconfirmed') {
-              loggedInUser.dontDisplayAccountLinkInNav = true;
-            }
-
-            // Expose the user record as an extra property on the request object (`req.me`).
-            // > Note that we make sure `req.me` doesn't already exist first.
-            if (req.me !== undefined) {
-              throw new Error('Cannot attach logged-in user as `req.me` because this property already exists!  (Is it being attached somewhere else?)');
-            }
             req.me = loggedInUser;
 
             // If our "lastSeenAt" attribute for this user is at least a few seconds old, then set it

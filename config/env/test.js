@@ -88,7 +88,7 @@ module.exports = {
     * https://sailsjs.com/docs/concepts/models-and-orm/model-settings#?migrate *
     *                                                                          *
     ***************************************************************************/
-    migrate: 'drop',
+    migrate: 'safe',
 
     /***************************************************************************
     *                                                                          *
@@ -353,7 +353,7 @@ module.exports = {
   * this, just try deploying without setting it and see if it works.)       *
   *                                                                         *
   ***************************************************************************/
-  // port: 80,
+  port: 1338,
 
 
 
