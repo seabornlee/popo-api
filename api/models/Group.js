@@ -6,42 +6,41 @@
  */
 
 module.exports = {
-
   attributes: {
     name: {
-      type: 'string',
-      required: true
+      type: "string",
+      required: true,
     },
 
     tags: {
-      type: 'string',
-      required: true
+      type: "string",
+      required: true,
     },
 
     location: {
-      type: 'string',
-      required: false
+      type: "string",
+      required: false,
     },
 
     images: {
-      type: 'string',
-      required: false
+      type: "string",
+      required: false,
     },
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
 
-
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝
-
 
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
+    owner: {
+      model: "user",
+      required: true,
+    },
   },
-
 };
-
