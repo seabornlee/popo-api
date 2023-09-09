@@ -48,5 +48,10 @@ module.exports = {
       model: "user",
       required: true,
     },
+
+    members: {
+      collection: "user",
+      via: "groups",
+    },
   },
 };

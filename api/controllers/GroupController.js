@@ -33,4 +33,24 @@ module.exports = {
       return res.serverError(err);
     }
   },
+
+  join: async function (req, res) {
+    try {
+      const groupId = req.params.groupId;
+      const userId = req.me.id;
+
+      const group = await Group.findOne({ id: groupId });
+      const user = await User.findOne({ id: userId });
+
+      if (!group || !user) {
+        return res.badRequest();
+      }
+
+      await User.addToCollection(userId, "groups").members(groupId);
+
+      return res.ok();
+    } catch (err) {
+      return res.serverError(err);
+    }
+  },
 };
