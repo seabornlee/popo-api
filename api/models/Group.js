@@ -42,5 +42,10 @@ module.exports = {
       model: "user",
       required: true,
     },
+
+    contact: {
+      type: "string",
+      required: false,
+    },
   },
 };
