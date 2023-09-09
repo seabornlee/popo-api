@@ -53,4 +53,14 @@ module.exports = {
       return res.serverError(err);
     }
   },
+
+  joined: async function (req, res) {
+    try {
+      const userId = req.me.id;
+      const user = await User.findOne({ id: userId }).populate("groups");
+      return res.json(user.groups);
+    } catch (err) {
+      return res.serverError(err);
+    }
+  },
 };

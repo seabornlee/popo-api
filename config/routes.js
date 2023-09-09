@@ -72,4 +72,5 @@ module.exports.routes = {
   },
   "POST  /api/v1/image-uploader": { action: "image-uploader" },
   "POST /group/:groupId/join": "GroupController.join",
+  "POST /group/joined": "GroupController.joined",
 };
