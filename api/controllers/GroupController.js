@@ -33,6 +33,8 @@ module.exports = {
         .populate("owner")
         .populate("members", { sort: "createdAt DESC" });
       console.log(group);
+      group.memberCount = group.members.length;
+      group.members = group.members.slice(0, 5);
       return res.json(group);
     } catch (err) {
       return res.serverError(err);
@@ -54,8 +56,6 @@ module.exports = {
     try {
       const groupId = req.params.id;
       const userId = req.me.id;
-      console.log(groupId);
-      console.log(userId);
 
       const group = await Group.findOne({ id: groupId });
       const user = await User.findOne({ id: userId });
