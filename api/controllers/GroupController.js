@@ -25,16 +25,10 @@ module.exports = {
 
   findOne: async function (req, res) {
     // find group by id and populate owner and top 5 memebers order by createdAt desc
-    console.log("-------findOne ----------");
     const id = req.params.id;
-    console.log(id);
     try {
-      const group = await Group.findOne(id)
-        .populate("owner")
-        .populate("members", { sort: "createdAt DESC" });
+      const group = await sails.services.groupservice.getGroup(id);
       console.log(group);
-      group.memberCount = group.members.length;
-      group.members = group.members.slice(0, 5);
       return res.json(group);
     } catch (err) {
       return res.serverError(err);
@@ -43,7 +37,6 @@ module.exports = {
 
   // list all order by createdAt desc
   list: async function (req, res) {
-    console.log("-------list ----------");
     try {
       let groups = await Group.find().populate("owner").sort("createdAt DESC");
       return res.json(groups);
@@ -66,7 +59,7 @@ module.exports = {
 
       await User.addToCollection(userId, "groups").members(groupId);
 
-      return res.ok();
+      return res.json(await sails.services.groupservice.getGroup(groupId));
     } catch (err) {
       return res.serverError(err);
     }
