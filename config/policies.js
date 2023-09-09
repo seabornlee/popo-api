@@ -21,6 +21,9 @@ module.exports.policies = {
   "legal/view-terms": true,
   "legal/view-privacy": true,
   "deliver-contact-form-message": true,
-  "group/find": true,
-  "group/list": true,
+  GroupController: {
+    "*": "is-logged-in",
+    list: true,
+    findOne: true,
+  },
 };

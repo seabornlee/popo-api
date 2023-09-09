@@ -71,6 +71,7 @@ module.exports.routes = {
     hasSocketFeatures: true,
   },
   "POST  /api/v1/image-uploader": { action: "image-uploader" },
-  "POST /group/:groupId/join": "GroupController.join",
+  "POST /group/:id/join": "GroupController.join",
   "POST /group/joined": "GroupController.joined",
+  "GET /group": "GroupController.list",
 };

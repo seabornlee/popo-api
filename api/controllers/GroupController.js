@@ -23,6 +23,22 @@ module.exports = {
     }
   },
 
+  findOne: async function (req, res) {
+    // find group by id and populate owner and top 5 memebers order by createdAt desc
+    console.log("-------findOne ----------");
+    const id = req.params.id;
+    console.log(id);
+    try {
+      const group = await Group.findOne(id)
+        .populate("owner")
+        .populate("members", { sort: "createdAt DESC" });
+      console.log(group);
+      return res.json(group);
+    } catch (err) {
+      return res.serverError(err);
+    }
+  },
+
   // list all order by createdAt desc
   list: async function (req, res) {
     console.log("-------list ----------");
@@ -36,8 +52,10 @@ module.exports = {
 
   join: async function (req, res) {
     try {
-      const groupId = req.params.groupId;
+      const groupId = req.params.id;
       const userId = req.me.id;
+      console.log(groupId);
+      console.log(userId);
 
       const group = await Group.findOne({ id: groupId });
       const user = await User.findOne({ id: userId });
