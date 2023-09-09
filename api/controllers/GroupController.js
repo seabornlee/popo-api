@@ -27,7 +27,7 @@ module.exports = {
   list: async function (req, res) {
     console.log("-------list ----------");
     try {
-      let groups = await Group.find().sort("createdAt DESC");
+      let groups = await Group.find().populate("owner").sort("createdAt DESC");
       return res.json(groups);
     } catch (err) {
       return res.serverError(err);
