@@ -113,17 +113,17 @@ module.exports.bootstrap = async function () {
     const result = [];
 
     for (let i = 1; i < lines.length; i++) {
-      let obj = {};
       const currentline = lines[i].split(",");
       console.log(currentline);
       if (currentline[0] === "") {
         continue;
       }
 
+      let obj = {};
       obj.name = currentline[0];
       obj.tags = JSON.stringify([currentline[1]]);
       obj.location = JSON.stringify({
-        name: currentline[2],
+        name: currentline[2].substr(13),
         latitude: parseFloat(currentline[3].substr(1)),
         longitude: parseFloat(
           currentline[4].substr(0, currentline[4].length - 1)
@@ -140,6 +140,7 @@ module.exports.bootstrap = async function () {
   fs.readFile("./assets/seed.csv", "utf8", function (err, data) {
     if (err) throw err;
     let groups = csvToJson(data);
+    console.log(groups);
     Group.createEach(groups).exec((err, groups) => {
       if (err) {
         console.log(err);

@@ -26,6 +26,12 @@ module.exports = {
       type: "string",
       required: false,
     },
+
+    contact: {
+      type: "string",
+      required: false,
+    },
+
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
@@ -41,11 +47,6 @@ module.exports = {
     owner: {
       model: "user",
       required: true,
-    },
-
-    contact: {
-      type: "string",
-      required: false,
     },
   },
 };
