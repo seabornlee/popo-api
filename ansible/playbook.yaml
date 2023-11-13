@@ -1,0 +1,5 @@
+---
+- hosts: staging-server
+  roles:
+    - role: setup
+    - role: deploy

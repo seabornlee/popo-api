@@ -135,3 +135,5 @@ lib-cov
 .vercel
 
 assets/uploads/
+devops/postgres-data
+devops/local.env

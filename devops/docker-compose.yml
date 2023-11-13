@@ -1,0 +1,25 @@
+version: "3.1"
+services:
+  db:
+    image: postgres:latest
+    env_file:
+      - local.env
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    # networks:
+    #   - mynetwork
+
+  # sails:
+  # build: .
+  # ports:
+  #   - "1337:1337"
+  # environment:
+  #   - DATABASE_URL=postgresql://luca:luca-password@db:5432/luca
+  # depends_on:
+  #   - db
+  # networks:
+  #   - mynetwork
+# networks:
+# mynetwork:

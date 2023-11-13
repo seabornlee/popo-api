@@ -1,0 +1,19 @@
+---
+- name: Update repositories
+  apt:
+    update_cache: yes
+
+- name: Install Node.js
+  apt:
+    name: nodejs
+    state: present
+
+- name: Install npm
+  apt:
+    name: npm
+    state: present
+
+- name: Install PM2
+  npm:
+    name: pm2
+    global: yes

@@ -1,0 +1,27 @@
+- name: Configure EC2 for Node.js app
+  hosts: production
+  remote_user: ubuntu
+  become: yes
+  roles:
+    - role: geerlingguy.nodejs
+
+  tasks:
+    - name: Update system
+      apt:
+        update_cache: yes
+
+    - name: Install essential packages
+      apt:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - git
+
+    - name: Check Node.js version
+      command: node -v
+
+    - name: Check npm version
+      command: npm -v
+
+    - name: Install PM2 globally
+      command: npm install pm2 -g

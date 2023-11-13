@@ -1,0 +1,22 @@
+---
+- name: Ensure git is installed
+  apt:
+    name: git
+    state: present
+
+- name: Clone the repository
+  git:
+    repo: "https://github.com/seabornlee/popo-api.git"
+    dest: /home/www/
+    version: main
+    force: yes
+
+- name: Install dependencies
+  command:
+    cmd: npm install
+    chdir: /home/www/
+
+- name: Start app
+  command:
+    cmd: pm2 reload app.js --name popo-api
+    chdir: /home/www/
