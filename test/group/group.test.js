@@ -1,13 +1,16 @@
-const request = require('supertest');
-const expect = require('chai').expect;
-const sails = require('sails');
+const request = require("supertest");
+const expect = require("chai").expect;
+const Sails = require("sails").Sails;
 
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = "test";
 
-describe('Group', () => {
+const sails = new Sails();
+describe("Group", () => {
   before((done) => {
     sails.lift({}, (err) => {
-      if (err) {return done(err);}
+      if (err) {
+        return done(err);
+      }
       done();
     });
   });
@@ -17,18 +20,25 @@ describe('Group', () => {
     sails.lower(done);
   });
 
-  describe('list groups', () => {
+  describe("list groups", () => {
     before(async () => {
-      await Group.create({name: 'test group', tags: '["test"]', images: '[""]', location: '{"latitude": 25.59158, "longitude": 100.22976}'});
+      await Group.create({
+        name: "test group",
+        tags: '["test"]',
+        images: '[""]',
+        location: '{"latitude": 25.59158, "longitude": 100.22976}',
+      });
       const groups = await Group.find();
       expect(groups.length).to.equal(1);
     });
 
-    it('returns 200', (done) => {
+    it("returns 200", (done) => {
       request(sails.hooks.http.app)
-        .get('/group') // replace with your actual endpoint
+        .get("/group") // replace with your actual endpoint
         .end((err, res) => {
-          if (err) {return done(err);}
+          if (err) {
+            return done(err);
+          }
           // Here you can add more assertions: expect(res.body).to...
           expect(res.statusCode).to.equal(200);
           expect(res.body.length).to.equal(1);
