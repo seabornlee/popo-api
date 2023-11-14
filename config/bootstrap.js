@@ -10,6 +10,7 @@
  */
 
 module.exports.bootstrap = async function () {
+  console.log("Bootstrap function is running");
   // Import dependencies
   var path = require("path");
 
@@ -22,6 +23,74 @@ module.exports.bootstrap = async function () {
     sails.config.appPath,
     ".tmp/bootstrap-version.json"
   );
+
+  // if group table is empty
+  const groups = await Group.find();
+  if (groups.length > 0) {
+    return;
+  }
+
+  const admin = await User.create({
+    nickName: "admin",
+    gender: 0,
+    city: "大理",
+    avatarUrl: "https://wx.qlogo.cn/mmop",
+    openid: "1",
+  }).fetch();
+
+  const fs = require("fs");
+  const csvToJson = (csv) => {
+    const lines = csv.split("\n");
+    const result = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const currentline = lines[i].split(",");
+      console.log(currentline);
+      if (currentline[0] === "") {
+        continue;
+      }
+
+      let obj = {};
+      obj.name = currentline[0];
+      obj.tags = JSON.stringify([currentline[1]]);
+      obj.location = JSON.stringify({
+        name: currentline[2].substr(13),
+        latitude: parseFloat(currentline[3].substr(1)),
+        longitude: parseFloat(
+          currentline[4].substr(0, currentline[4].length - 1)
+        ),
+      });
+      obj.images = "[]";
+      obj.contact = currentline[5];
+      obj.owner = admin.id;
+      result.push(obj);
+    }
+    return result;
+  };
+
+  fs.readFile("./assets/seed.csv", "utf8", function (err, data) {
+    if (err) throw err;
+    let groups = csvToJson(data);
+    console.log(groups);
+    Group.createEach(groups).exec((err, groups) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("success");
+      }
+    });
+  });
+
+  // await Group.createEach([
+  //   {
+  //     name: "面包树",
+  //     tags: "[]",
+  //     location:
+  //       '{"name": "大理市", "longitude": 100.235733, "latitude": 25.595603}',
+  //     images: "[]",
+  //     owner: admin.id,
+  //   },
+  // ]);
 
   // Whether or not to continue doing the stuff in this file (i.e. wiping and regenerating data)
   // depends on some factors:
@@ -97,68 +166,6 @@ module.exports.bootstrap = async function () {
   // By convention, this is a good place to set up fake data during development.
   // await User.createEach([
   //   { emailAddress: 'admin@example.com', fullName: 'Ryan Dahl', isSuperAdmin: true, password: await sails.helpers.passwords.hashPassword('abc123') },
-  // ]);
-
-  const admin = await User.create({
-    nickName: "admin",
-    gender: 0,
-    city: "大理",
-    avatarUrl: "https://wx.qlogo.cn/mmop",
-    openid: "1",
-  }).fetch();
-
-  const fs = require("fs");
-  const csvToJson = (csv) => {
-    const lines = csv.split("\n");
-    const result = [];
-
-    for (let i = 1; i < lines.length; i++) {
-      const currentline = lines[i].split(",");
-      console.log(currentline);
-      if (currentline[0] === "") {
-        continue;
-      }
-
-      let obj = {};
-      obj.name = currentline[0];
-      obj.tags = JSON.stringify([currentline[1]]);
-      obj.location = JSON.stringify({
-        name: currentline[2].substr(13),
-        latitude: parseFloat(currentline[3].substr(1)),
-        longitude: parseFloat(
-          currentline[4].substr(0, currentline[4].length - 1)
-        ),
-      });
-      obj.images = "[]";
-      obj.contact = currentline[5];
-      obj.owner = admin.id;
-      result.push(obj);
-    }
-    return result;
-  };
-
-  fs.readFile("./assets/seed.csv", "utf8", function (err, data) {
-    if (err) throw err;
-    let groups = csvToJson(data);
-    console.log(groups);
-    Group.createEach(groups).exec((err, groups) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("success");
-      }
-    });
-  });
-
-  // await Group.createEach([
-  //   {
-  //     name: "面包树",
-  //     tags: "[]",
-  //     location:
-  //       '{"name": "大理市", "longitude": 100.235733, "latitude": 25.595603}',
-  //     images: "[]",
-  //     owner: admin.id,
-  //   },
   // ]);
 
   // Save new bootstrap version
