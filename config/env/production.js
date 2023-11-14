@@ -44,6 +44,8 @@ module.exports = {
      *                                                                          *
      ***************************************************************************/
     default: {
+      adapter: "sails-postgresql",
+      url: process.env.DATABASE_URL,
       // adapter: 'sails-mysql',
       // url: 'mysql://user:password@host:port/database',
       //--------------------------------------------------------------------------
