@@ -83,7 +83,7 @@ module.exports = {
      * https://sailsjs.com/docs/concepts/models-and-orm/model-settings#?migrate *
      *                                                                          *
      ***************************************************************************/
-    migrate: "safe",
+    migrate: "alter",
 
     /***************************************************************************
      *                                                                          *
@@ -281,7 +281,7 @@ module.exports = {
    *                                                                         *
    ***************************************************************************/
   log: {
-    level: "debug",
+    level: "silly",
   },
 
   http: {
