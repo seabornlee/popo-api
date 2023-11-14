@@ -5,17 +5,17 @@ CREATE TABLE "user" (
   "gender" INTEGER CHECK( gender IN (0,1,2) ),  
   "avatarUrl" VARCHAR(500),
   "tosAcceptedByIp" VARCHAR(15),  
-  "lastSeenAt" TIMESTAMP,
+  "lastSeenAt" BIGINT,
   "openid" TEXT, 
-  "createdAt" TIMESTAMP WITH TIME ZONE,
-  "updatedAt" TIMESTAMP WITH TIME ZONE
+  "createdAt" BIGINT,
+  "updatedAt" BIGINT
 );
 
 CREATE TABLE "upload" (
   id SERIAL PRIMARY KEY, 
   "url" TEXT NOT NULL,  
-  "createdAt" TIMESTAMP WITH TIME ZONE,
-  "updatedAt" TIMESTAMP WITH TIME ZONE
+  "createdAt" BIGINT,
+  "updatedAt" BIGINT
 );
 
 CREATE TABLE "group" (
@@ -26,8 +26,8 @@ CREATE TABLE "group" (
   "images" TEXT,
   "contact" TEXT,
   "owner" INTEGER,
-  "createdAt" TIMESTAMP WITH TIME ZONE,
-  "updatedAt" TIMESTAMP WITH TIME ZONE,
+  "createdAt" BIGINT,
+  "updatedAt" BIGINT,
   FOREIGN KEY ("owner") REFERENCES "user" ("id") ON DELETE SET NULL
 );
 
