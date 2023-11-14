@@ -235,6 +235,9 @@ module.exports = {
    *                                                                          *
    ***************************************************************************/
   sockets: {
+    beforeConnect: function (handshake, proceed) {
+      return proceed(true);
+    },
     /***************************************************************************
      *                                                                          *
      * Uncomment the `onlyAllowOrigins` whitelist below to configure which      *
