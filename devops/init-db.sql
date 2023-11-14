@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS "user_group";
+DROP TABLE IF EXISTS "group";
+DROP TABLE IF EXISTS "upload";
+DROP TABLE IF EXISTS "user";
+
 CREATE TABLE "user" (
   id SERIAL PRIMARY KEY,  
   "nickName" VARCHAR(120),
