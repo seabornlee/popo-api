@@ -1,3 +1,4 @@
+require("dotenv").config();
 /**
  * Production environment settings
  * (sails.config.*)
@@ -355,6 +356,9 @@ module.exports = {
   custom: {
     baseUrl: "http://ec2-54-179-116-213.ap-southeast-1.compute.amazonaws.com",
     internalEmailAddress: "support@example.com",
+    appId: process.env.APP_ID,
+    appSecret: process.env.APP_SECRET,
+    jwtSeed: process.env.JWT_SEED,
 
     // sendgridSecret: 'SG.fake.3e0Bn0qSQVnwb1E4qNPz9JZP5vLZYqjh7sn8S93oSHU',
     // stripeSecret: 'sk_prod__fake_Nfgh82401348jaDa3lkZ0d9Hm',

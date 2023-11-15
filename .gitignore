@@ -137,3 +137,4 @@ lib-cov
 assets/uploads/
 devops/postgres-data
 devops/local.env
+.env
